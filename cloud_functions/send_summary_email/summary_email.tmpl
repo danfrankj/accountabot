@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en'>
+ <head>
+   <meta charset='utf-8'>
+ </head>
+ <body>
+   <br />
+   Group Progress:
+   <big>{{ '{0:.0%}'.format(total_progress  / total_denominator) }}</big>
+   <small>{{ total_progress }} / {{ total_denominator }}</small>
+   <table border="0" style="border-collapse: collapse;width: 800px;">
+     <tr>
+       <th style="border: 1px solid #ddd;padding: 4px;padding-top: 6px;padding-bottom: 6px;text-align: left;background-color: #607d8b85;"> </th>
+       <th style="border: 1px solid #ddd;padding: 4px;padding-top: 6px;padding-bottom: 6px;text-align: left;background-color: #607d8b85;">Goal</th>
+       {% if group['tracking_cadence'] == 'weekly' %}
+       <th style="border: 1px solid #ddd;padding: 4px;padding-top: 6px;padding-bottom: 6px;text-align: left;background-color: #607d8b85;">Last Week</th>
+       <th style="border: 1px solid #ddd;padding: 4px;padding-top: 6px;padding-bottom: 6px;text-align: left;background-color: #607d8b85;">This Week</th>
+       {% endif %}
+       <th style="border: 1px solid #ddd;padding: 4px;padding-top: 6px;padding-bottom: 6px;text-align: left;background-color: #607d8b85;">Cumulative</th>
+     </tr>
+     {%- for goal in goals %}
+     <tr>
+       <td style="border: 1px solid #ddd;padding: 4px;" >
+         {{ goal['name'] }}
+       </td>
+       <td style="border: 1px solid #ddd;padding: 4px;">
+         {{ goal['description'] }}
+       </td>
+       {% if group['tracking_cadence'] == 'weekly' %}
+       <td style="border: 1px solid #ddd;padding: 4px;">
+         {{ goal['last_week'] }}
+         {% if goal['completed_last_week'] %}
+         ✅
+         {% else %}
+         ❌
+         {% endif %}
+       </td>
+       <td style="border: 1px solid #ddd;padding: 4px;">
+         {{ goal['this_week'] }}
+       </td>
+       {% endif %}
+       <td style="border: 1px solid #ddd;padding: 4px;background-color: {{ goal['background-color'] }}">
+         <big>{{ '{0:.0%}'.format(goal['progress']  / goal['denominator']) }}</big>
+         <small>{{ goal['progress'] }} / {{ goal['denominator'] }}</small>
+       </td>
+     </tr>
+     {%- endfor %}
+   </table>
+   <br />
+   <br />
+   <strike>BeepBoop</strike><br>Love,<br> Eccountabot
+ </body>
+</html>

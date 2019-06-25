@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang='en'>
+ <head>
+   <meta charset='UTF-8'>
+ </head>
+ <body>
+   <div style="max-width:350px; margin:0">
+     <p>
+       <b>Your goal:</b> {{ goal['description'] }}
+       {% if streak >= 3 %}
+       <br />
+       🔥 You're on a roll with a {{ streak }} day streak! Keep it up.
+       {% endif %}
+     </p>
+     {% if goal.get('this_week', None) %}
+     <p>
+       Current week:
+       <em>{{ goal['this_week'] }}</em>
+     </p>
+     {% endif %}
+     {% if goal.get('motivation', None) %}
+     <p style='margin-left: 1em;'>
+       <em>{{ goal['motivation'] }}</em>
+     </p>
+     {% endif %}
+     {% if denominator > 0 %}
+     <p>
+       <b>Current Progress</b>:
+       <br />
+       &nbsp;&nbsp;
+       <big>{{ '{0:.0%}'.format(progress  / denominator) }}</big>
+       &nbsp;
+       <small>{{ progress }} / {{ denominator }}</small>
+       &emsp; &mdash; {{ days_remaining }} days remaining
+     </p>
+     {% endif %}
+     {% if group_progress_since_my_last_completion > 0 %}
+     <p>
+       <b>Since your last logged goal</b>:
+       <br />
+       &nbsp;&nbsp;
+       Your teammates have completed their goals {{ group_progress_since_my_last_completion }} times.
+     </p>
+     {% endif %}
+     <form
+       action='https://us-central1-accountabot.cloudfunctions.net/record_progress'
+       method='GET'
+       id='recordprogressform'
+     >
+       <input type='hidden' name='opportunity' value='{{ opportunity }}' />
+       <input type='hidden' name='group_id' value='{{ group.id }}' />
+       <input type='hidden' name='goal_id' value='{{ goal.id }}' />
+       {% if tracking_cadence == 'weekly' %}
+       Next week: What are you going to do to complete your goal.
+       <br />
+       <textarea rows="2" cols="50" name="this_week" form="recordprogressform"></textarea>
+       <br />
+       {% endif %}
+       {% if tracking_cadence == 'daily' %}
+       How about TODAY - did you do it!?
+       {% else %}
+       How about THIS WEEK - did you do it!?
+       {% endif %}
+       <br />
+       <input
+         type='submit'
+         name='yes_button'
+         value='I did it !!'
+         style="color:white; border-radius:4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(28, 184, 65);"
+       >
+       <input
+         type='submit'
+         name='no_button'
+         value="I didn't :("
+         style="color:white; border-radius:4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(202, 60, 60);"
+       >
+     </form>
+   </div>
+   <p>
+     <strike>BeepBoop</strike><br>Love,<br> Eccountabot
+   </p>
+ </body>
+</html>

@@ -1,0 +1,7 @@
+# Function dependencies, for example:
+# package>=version
+pytz
+jinja2
+sendgrid
+google-cloud-datastore
+python_http_client

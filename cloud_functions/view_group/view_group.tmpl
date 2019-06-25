@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <a href="{{ BASE_URL }}/home" style="color:black"><h1>Accountabot</h1></a>
+      {% if success_alert %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Congrats!</strong> You've added a group - find your name below
+      </div>
+      {% endif %}
+      <h3>Group: {{ group['name'] }}</h3>
+      <table class="table table-hover col-7">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Goal</th>
+            {% if group['tracking_cadence'] == 'weekly' %}
+            <th scope="col">This Week</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for goal in goals %}
+          <tr>
+            <td>
+              {{ goal['name'] }}
+            </td>
+            <td>
+              {{ goal['description'] }}
+            </td>
+            {% if group['tracking_cadence'] == 'weekly' %}
+            <td>
+              {{ goal['this_week'] }}
+            </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <h3>Add to Group</h3>
+      <form action='{{ BASE_URL }}/add_to_group' method='POST'>
+        <div class="col-7">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type='text' name='name' class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type='email' name='email' class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <input type='text' name='description' class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="this_week">This Week:</label>
+            <textarea
+              class="form-control" rows="2" name="this_week"
+              placeholder="What are you going to do this week to achieve your goal? Be specific and measurable."
+              required
+            ></textarea>
+          </div>
+          <input type='hidden' name='group_id' value='{{ group.id }}' />
+          <button type="submit" class="btn btn-primary">Add to Group!</button>
+        </div>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>

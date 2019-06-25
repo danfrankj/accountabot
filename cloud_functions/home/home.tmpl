@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Accountabot</h1>
+      {% if success_alert %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Congrats!</strong> You've added a group - find your name below
+      </div>
+      {% endif %}
+      Accountabot is a goal tracking service with social accountability built in. Join a group to
+      commit to your goals - and being held accountable by your friends :)
+      <br /><br />
+      <h3>How it works</h3>
+      After joining or creating an accountability group. You'll get ...
+      <ul>
+        <li>
+          <strong>Tracking:</strong> email sent to you at 7pm with your current progress and a button to press to indicate you've completed goal
+        </li>
+        <li>
+          <strong>Check-ins:</strong> weekly email sent to the group on with the group's progress so far
+        </li>
+        <li>
+          <strong>Final Summary:</strong>final email at the end of the group summarizing the group's progress
+        </li>
+      </ul>
+      <br />
+      <h3>Accountability Groups</h3>
+      <table class="table table-hover col-7">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Cadence</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for group in groups %}
+          <tr>
+            <td>
+              <a href='{{ BASE_URL }}/view_group?group_id={{ group.id }}'>{{ group['name'] }}</a>
+            </td>
+            <td>
+              {{ group['start_date'] }}
+            </td>
+            <td>
+              {{ group['end_date'] }}
+            </td>
+            <td>
+              {{ group['tracking_cadence'] }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <h3>Create Group</h3>
+      <form action='{{ BASE_URL }}/create_group' method='POST'>
+        <div class="col-7">
+          <div class="form-group">
+            <label for="name">Group Name:</label>
+            <input type='text' name='name' class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="start_date">Start Date:</label>
+            <input type='date' name='start_date' min="{{ dt.date().isoformat() }}" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="end_date">End Date:</label>
+            <input type='date' name='end_date' min="{{ dt.date().isoformat() }}" class="form-control" required>
+          </div>
+          <div class="form-group">
+            Cadence:
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tracking_cadence" id="tracking_cadence_daily" value="daily" checked required>
+              <label class="form-check-label" for="tracking_cadence_daily">Daily</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="tracking_cadence" id="tracking_cadence_weekly" value="weekly" required>
+              <label class="form-check-label" for="tracking_cadence_weekly">Weekly</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Group!</button>
+        </div>
+      </form>
+      <br />
+      <h2>FAQ</h2>
+      <p>
+        Q: what makes for good goals?<br />
+        A: something small you can do every day; even at night in case you have a busy day<br /><br />
+
+        Q: what if I didn't do it one day and make it up the other day?<br />
+        A: for now as long as you press the button, it'll record, but in the future, I'll probably make it so you have to do it in 48 hours<br /><br />
+
+        Q: what if I want off this ride ?<br />
+        A: let me know and I'll make it stop<br /><br />
+
+        Q: wait - other people will see my progress? and my email?<br />
+        A: yup and that's kind of the point, but I'm keeping this to a <=10ish people that I know and vouch for personally<br /><br />
+      </p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
