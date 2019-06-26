@@ -27,6 +27,7 @@ def compute_goal_color(goal):
 
 def send_summary_email(data, context):
     print(data, context)
+    force_send = data.get('force_send', False)
     sg = sendgrid.SendGridAPIClient(api_key=os.environ['SENDGRID_API_KEY'])
     dt = datetime.datetime.now(pytz.timezone('US/Pacific'))
 
@@ -49,7 +50,7 @@ def send_summary_email(data, context):
         ).isoformat()
 
         is_final = dt.date().isoformat() == final_summary_date
-        if dt.weekday() != 0 and not is_final and not IS_DEVELOPMENT:
+        if not force_send and dt.weekday() != 0 and not is_final and not IS_DEVELOPMENT:
             continue
 
         goals_query = client.query(
